@@ -4,14 +4,17 @@
  * @created 2024-12-19
  * @description This module provides a comprehensive GitHub API service with advanced features
  * including automatic retry mechanisms, intelligent throttling, response caching, and
- * multi-account support for high-volume repository analysis operations.
- * 
+ * single account support with runtime configuration for GitHub repository analysis operations.
+ *
  * Key Features:
  * - Automatic retry with exponential backoff for failed requests
  * - Intelligent rate limiting to prevent API abuse
  * - Response caching with TTL for improved performance
- * - Multi-account support for parallel operations
+ * - Single account support with runtime username/token configuration
+ * - Environment variable defaults with override capability
  * - Comprehensive error handling and recovery
+ *
+ * @credits Code review and enhancement by Cursor AI
  */
 
 import { Octokit } from "@octokit/rest";
@@ -26,7 +29,7 @@ import type {
 
 /**
  * Enhanced Octokit client with retry and throttling plugins
- * 
+ *
  * This configuration provides:
  * - Automatic retry for transient failures (network issues, rate limits)
  * - Intelligent throttling to respect GitHub's rate limits
@@ -37,24 +40,23 @@ const EnhancedOctokit = Octokit.plugin(retry, throttling);
 
 /**
  * Enhanced GitHub Service Class
- * 
+ *
  * Provides a robust, production-ready GitHub API client with advanced features
- * for high-volume repository analysis operations.
+ * for repository analysis operations with single account support and runtime configuration.
  */
 export class GitHubService {
   /**
-   * Account management - stores authenticated GitHub accounts
-   * Key: account ID, Value: { account details, octokit instance }
+   * Current GitHub account configuration
    */
-  private accounts: Map<string, { account: GitHubAccount; octokit: Octokit }> =
-    new Map();
-  
+  private currentAccount: GitHubAccount | null = null;
+  private octokit: Octokit | null = null;
+
   /**
    * Response cache for improved performance
    * Key: cache key, Value: { data, timestamp }
    */
   private cache: Map<string, { data: any; timestamp: number }> = new Map();
-  
+
   /**
    * Cache Time-To-Live: 5 minutes
    * Balances performance improvement with data freshness
@@ -62,54 +64,82 @@ export class GitHubService {
   private readonly CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 
   /**
-   * Constructor - Initializes the service and sets up GitHub accounts
+   * Constructor - Initializes the service with environment defaults
    */
   constructor() {
-    this.initializeAccounts();
+    this.initializeFromEnvironment();
   }
 
-  private initializeAccounts(): void {
-    const accounts = [
-      {
-        id: "account1",
-        username: process.env.GITHUB_USERNAME_1!,
-        token: process.env.GITHUB_TOKEN_1!,
-      },
-      // {
-      // 	id: "account2",
-      // 	username: process.env.GITHUB_USERNAME_2!,
-      // 	token: process.env.GITHUB_TOKEN_2!,
-      // },
-    ].filter((acc) => acc.username && acc.token);
+  /**
+   * Initialize from environment variables
+   */
+  private initializeFromEnvironment(): void {
+    const username = process.env.GITHUB_USERNAME;
+    const token = process.env.GITHUB_TOKEN;
 
-    accounts.forEach((account) => {
-      const octokit = new EnhancedOctokit({
-        auth: account.token,
-        throttle: {
-          onRateLimit: (retryAfter, options, octokit) => {
-            console.warn(
-              `Rate limit exceeded for ${options.method} ${options.url}. Retrying after ${retryAfter} seconds.`
-            );
-            return true;
-          },
-          onSecondaryRateLimit: (retryAfter, options, octokit) => {
-            console.warn(
-              `Secondary rate limit exceeded for ${options.method} ${options.url}. Retrying after ${retryAfter} seconds.`
-            );
-            return true;
-          },
+    if (username && token) {
+      this.setAccount(username, token);
+    }
+  }
+
+  /**
+   * Set the current GitHub account
+   */
+  setAccount(username: string, token: string): void {
+    this.currentAccount = {
+      id: "current",
+      username,
+      token,
+    };
+
+    this.octokit = new EnhancedOctokit({
+      auth: token,
+      throttle: {
+        onRateLimit: (retryAfter, options, octokit) => {
+          console.warn(
+            `Rate limit exceeded for ${options.method} ${options.url}. Retrying after ${retryAfter} seconds.`
+          );
+          return true;
         },
-        retry: {
-          doNotRetry: ["400", "401", "403", "404", "422"],
-          retryAfterBaseValue: 1000,
-          retries: 3,
+        onSecondaryRateLimit: (retryAfter, options, octokit) => {
+          console.warn(
+            `Secondary rate limit exceeded for ${options.method} ${options.url}. Retrying after ${retryAfter} seconds.`
+          );
+          return true;
         },
-      });
-      this.accounts.set(account.id, { account, octokit });
+      },
+      retry: {
+        doNotRetry: ["400", "401", "403", "404", "422"],
+        retryAfterBaseValue: 1000,
+        retries: 3,
+      },
     });
+
+    // Clear cache when account changes
+    this.cache.clear();
+  }
+
+  /**
+   * Get current account information
+   */
+  getCurrentAccount(): GitHubAccount | null {
+    return this.currentAccount;
+  }
+
+  /**
+   * Check if account is configured
+   */
+  isConfigured(): boolean {
+    return this.currentAccount !== null && this.octokit !== null;
   }
 
   async getAllRepositories(forceRefresh = false): Promise<Repository[]> {
+    if (!this.isConfigured()) {
+      throw new Error(
+        "GitHub account not configured. Please set username and token."
+      );
+    }
+
     const cacheKey = "all_repositories";
 
     // Check cache first
@@ -120,58 +150,56 @@ export class GitHubService {
       }
     }
 
-    const allRepos: Repository[] = [];
-
-    for (const [accountId, { account, octokit }] of this.accounts) {
-      try {
-        const { data: repos } = await octokit.repos.listForAuthenticatedUser({
+    try {
+      const { data: repos } =
+        await this.octokit!.repos.listForAuthenticatedUser({
           sort: "updated",
           per_page: 100,
           visibility: "all",
         });
 
-        allRepos.push(
-          ...(repos.map((repo) => ({
-            id: repo.id,
-            name: repo.name,
-            fullName: repo.full_name,
-            description: repo.description,
-            language: repo.language,
-            stars: repo.stargazers_count,
-            forks: repo.forks_count,
-            size: repo.size,
-            updatedAt: repo.updated_at,
-            createdAt: repo.created_at,
-            private: repo.private,
-            url: repo.html_url,
-            account: accountId,
-            username: account.username,
-            topics: repo.topics || [],
-            license: repo.license?.name || null,
-            defaultBranch: repo.default_branch,
-          })) as any)
-        );
-      } catch (error: any) {
-        console.error(`Error fetching repos for ${accountId}:`, error);
-        // Continue with other accounts even if one fails
-      }
+      const allRepos: Repository[] = repos.map((repo) => ({
+        id: repo.id,
+        name: repo.name,
+        fullName: repo.full_name,
+        description: repo.description,
+        language: repo.language,
+        stars: repo.stargazers_count,
+        forks: repo.forks_count,
+        size: repo.size,
+        updatedAt: repo.updated_at || new Date().toISOString(),
+        createdAt: repo.created_at || new Date().toISOString(),
+        private: repo.private,
+        url: repo.html_url,
+        account: this.currentAccount!.id,
+        username: this.currentAccount!.username,
+        topics: repo.topics || [],
+        license: repo.license?.name || null,
+        defaultBranch: repo.default_branch,
+      }));
+
+      // Cache the result
+      this.cache.set(cacheKey, {
+        data: allRepos,
+        timestamp: Date.now(),
+      });
+
+      return allRepos;
+    } catch (error: any) {
+      console.error(`Error fetching repositories:`, error);
+      throw new Error(`Failed to fetch repositories: ${error.message}`);
     }
-
-    // Cache the result
-    this.cache.set(cacheKey, {
-      data: allRepos,
-      timestamp: Date.now(),
-    });
-
-    return allRepos;
   }
 
   async getRepositoryStructure(
     owner: string,
     repo: string
   ): Promise<ProjectStructure> {
-    const account = this.getAccountByUsername(owner);
-    if (!account) throw new Error(`Account not found for username: ${owner}`);
+    if (!this.isConfigured()) {
+      throw new Error(
+        "GitHub account not configured. Please set username and token."
+      );
+    }
 
     const structure: ProjectStructure = {
       files: [],
@@ -182,7 +210,7 @@ export class GitHubService {
       configs: [],
     };
 
-    await this.traverseRepository(account.octokit, owner, repo, "", structure);
+    await this.traverseRepository(this.octokit!, owner, repo, "", structure);
 
     return structure;
   }
@@ -339,16 +367,10 @@ export class GitHubService {
     return null;
   }
 
-  private getAccountByUsername(
-    username: string
-  ): { account: GitHubAccount; octokit: Octokit } | null {
-    for (const accountData of this.accounts.values()) {
-      if (accountData.account.username === username) return accountData;
-    }
-    return null;
-  }
-
+  /**
+   * Get current account information (for backward compatibility)
+   */
   getAccounts(): GitHubAccount[] {
-    return Array.from(this.accounts.values()).map(({ account }) => account);
+    return this.currentAccount ? [this.currentAccount] : [];
   }
 }

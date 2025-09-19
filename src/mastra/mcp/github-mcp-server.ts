@@ -6,12 +6,14 @@
  * GitHub analysis tools and agents to external clients. It provides a standardized
  * interface for integrating the GitHub Partner AI capabilities with other applications
  * and development tools.
- * 
+ *
  * The MCP server enables:
  * - External tool integration via standardized protocol
  * - Cross-platform compatibility with MCP-compliant clients
  * - Scalable deployment and distribution
  * - Professional API exposure for enterprise use
+ *
+ * @credits MCP implementation enhanced by Cursor AI
  */
 
 import { MCPServer } from "@mastra/mcp";
@@ -29,7 +31,7 @@ import {
 
 /**
  * GitHub MCP Server Configuration
- * 
+ *
  * This server exposes the complete GitHub Partner AI platform via Model Context Protocol,
  * enabling external clients to access advanced repository analysis capabilities through
  * a standardized interface.
@@ -41,35 +43,35 @@ export const githubMCPServer = new MCPServer({
   version: "2.0.0",
   description:
     "Advanced GitHub repository analysis and management with AI-powered insights",
-  
+
   /**
    * Agent Configuration
    * Exposes AI agents for intelligent repository analysis
    */
   agents: {
-    githubExpertAgent: githubExpertAgent,  // Advanced GitHub analysis agent
+    githubExpertAgent: githubExpertAgent, // Advanced GitHub analysis agent
   },
-  
+
   /**
    * Tool Configuration
    * Comprehensive set of GitHub analysis tools organized by category
    */
   tools: {
     // Core GitHub Operations
-    listRepositories: listRepositoriesTool,    // Repository discovery and listing
-    analyzeCodebase: analyzeCodebaseTool,      // Basic codebase structure analysis
-    createFile: createFileTool,                // File creation and modification
+    listRepositories: listRepositoriesTool, // Repository discovery and listing
+    analyzeCodebase: analyzeCodebaseTool, // Basic codebase structure analysis
+    createFile: createFileTool, // File creation and modification
 
     // Advanced Analysis Tools
-    getRepositoryMetrics: getRepositoryMetricsTool,  // Comprehensive metrics and statistics
-    searchRepositories: searchRepositoriesTool,      // Advanced repository search and filtering
-    getCodeQuality: getCodeQualityTool,              // Code quality assessment and scoring
+    getRepositoryMetrics: getRepositoryMetricsTool, // Comprehensive metrics and statistics
+    searchRepositories: searchRepositoriesTool, // Advanced repository search and filtering
+    getCodeQuality: getCodeQualityTool, // Code quality assessment and scoring
 
     // Security and Dependency Analysis
-    securityScan: securityScanTool,                  // Security vulnerability scanning
-    dependencyAnalysis: dependencyAnalysisTool,      // Dependency analysis and vulnerability detection
+    securityScan: securityScanTool, // Security vulnerability scanning
+    dependencyAnalysis: dependencyAnalysisTool, // Dependency analysis and vulnerability detection
   },
-  
+
   /**
    * Repository Information
    * Source repository metadata for the MCP server
@@ -79,7 +81,7 @@ export const githubMCPServer = new MCPServer({
     source: "github",
     id: "github-partner-ai",
   },
-  
+
   /**
    * Package Information
    * NPM package metadata for distribution
@@ -91,7 +93,7 @@ export const githubMCPServer = new MCPServer({
       registry_name: "npm",
     },
   ],
-  
+
   /**
    * Remote Endpoints
    * Available transport endpoints for client connections

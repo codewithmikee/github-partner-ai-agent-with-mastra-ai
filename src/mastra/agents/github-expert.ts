@@ -5,7 +5,7 @@
  * @description This module defines the GitHub Expert AI agent that provides comprehensive
  * repository analysis capabilities including code quality assessment, security scanning,
  * dependency analysis, and performance metrics evaluation.
- * 
+ *
  * The agent leverages 8 specialized tools to deliver professional-grade insights
  * for GitHub repositories, making it suitable for developers, teams, and organizations
  * seeking to understand and improve their codebase quality and security posture.
@@ -28,7 +28,7 @@ import { openai } from "@ai-sdk/openai";
 
 /**
  * GitHub Expert AI Agent Configuration
- * 
+ *
  * This agent is designed to provide comprehensive analysis of GitHub repositories
  * using a sophisticated set of tools and AI capabilities. It combines multiple
  * analysis approaches to deliver actionable insights for developers and teams.
@@ -37,7 +37,7 @@ export const githubExpertAgent = new Agent({
   name: "github-expert",
   description:
     "Advanced GitHub Expert AI with comprehensive repository analysis capabilities including code quality assessment, security scanning, dependency analysis, and performance metrics.",
-  
+
   /**
    * Comprehensive instruction set that defines the agent's behavior, capabilities,
    * and analysis approach. This instruction set is designed to ensure consistent,
@@ -102,13 +102,13 @@ export const githubExpertAgent = new Agent({
 - Be honest about limitations and uncertainties
 
 Use your comprehensive toolset to provide thorough, professional-grade repository analysis.`,
-  
+
   /**
    * AI Model Configuration
    * Using OpenAI's GPT-4o-mini for optimal balance of performance and cost
    */
   model: openai("gpt-4o-mini"),
-  
+
   /**
    * Memory Configuration
    * Persistent memory storage using LibSQL for maintaining context across sessions
@@ -119,21 +119,21 @@ Use your comprehensive toolset to provide thorough, professional-grade repositor
       url: "file:../mastra.db", // path is relative to the .mastra/output directory
     }),
   }),
-  
+
   /**
    * Tool Configuration
    * Comprehensive set of 8 specialized tools for different aspects of repository analysis:
-   * 
+   *
    * Core Operations:
    * - listRepositoriesTool: Repository discovery and listing
    * - analyzeCodebaseTool: Basic codebase structure analysis
    * - createFileTool: File creation and modification
-   * 
+   *
    * Advanced Analysis:
    * - getRepositoryMetricsTool: Comprehensive metrics and statistics
    * - searchRepositoriesTool: Advanced repository search and filtering
    * - getCodeQualityTool: Code quality assessment and scoring
-   * 
+   *
    * Security & Dependencies:
    * - securityScanTool: Security vulnerability scanning
    * - dependencyAnalysisTool: Dependency analysis and vulnerability detection

@@ -36,6 +36,7 @@ This project follows a code of conduct that we expect all contributors to adhere
 ### Development Setup
 
 1. **Fork the repository**
+
    ```bash
    # Fork on GitHub, then clone your fork
    git clone https://github.com/your-username/github-partner-ai.git
@@ -43,11 +44,13 @@ This project follows a code of conduct that we expect all contributors to adhere
    ```
 
 2. **Install dependencies**
+
    ```bash
    pnpm install
    ```
 
 3. **Set up environment**
+
    ```bash
    cp .env.example .env
    # Edit .env with your GitHub and OpenAI API keys
@@ -125,6 +128,7 @@ git push origin feature/your-feature-name
 ```
 
 Then create a Pull Request on GitHub with:
+
 - Clear title and description
 - Reference to related issues
 - Screenshots or examples if applicable
@@ -140,6 +144,7 @@ Then create a Pull Request on GitHub with:
 ### Creating a Good Issue
 
 **Bug Reports:**
+
 - Clear, descriptive title
 - Steps to reproduce
 - Expected vs actual behavior
@@ -147,6 +152,7 @@ Then create a Pull Request on GitHub with:
 - Error messages or logs
 
 **Feature Requests:**
+
 - Clear description of the feature
 - Use case and motivation
 - Proposed solution (if any)
@@ -155,6 +161,7 @@ Then create a Pull Request on GitHub with:
 ### Issue Templates
 
 Use the provided issue templates:
+
 - Bug Report
 - Feature Request
 - Documentation
@@ -175,7 +182,10 @@ const repositoryAnalysis = await analyzeRepository(repo);
  * @param repo - Repository name
  * @returns Promise<AnalysisResult> - Comprehensive analysis results
  */
-export async function analyzeRepository(owner: string, repo: string): Promise<AnalysisResult> {
+export async function analyzeRepository(
+  owner: string,
+  repo: string
+): Promise<AnalysisResult> {
   // Implementation
 }
 
@@ -214,15 +224,15 @@ src/
 
 ```typescript
 // Example test structure
-describe('GitHubService', () => {
-  describe('getAllRepositories', () => {
-    it('should return repositories for valid account', async () => {
+describe("GitHubService", () => {
+  describe("getAllRepositories", () => {
+    it("should return repositories for valid account", async () => {
       // Arrange
       const service = new GitHubService();
-      
+
       // Act
       const repos = await service.getAllRepositories();
-      
+
       // Assert
       expect(repos).toBeDefined();
       expect(Array.isArray(repos)).toBe(true);
@@ -251,6 +261,7 @@ describe('GitHubService', () => {
 ### Documentation Updates
 
 When adding new features:
+
 1. Update README.md
 2. Add JSDoc comments
 3. Update API documentation
@@ -261,6 +272,7 @@ When adding new features:
 ### Version Bumping
 
 We use semantic versioning (SemVer):
+
 - **Patch** (1.0.1): Bug fixes
 - **Minor** (1.1.0): New features (backward compatible)
 - **Major** (2.0.0): Breaking changes
@@ -268,6 +280,7 @@ We use semantic versioning (SemVer):
 ### Changelog
 
 Update CHANGELOG.md with:
+
 - New features
 - Bug fixes
 - Breaking changes
@@ -284,6 +297,7 @@ Update CHANGELOG.md with:
 ### Recognition
 
 Contributors will be recognized in:
+
 - README.md contributors section
 - Release notes
 - Project documentation

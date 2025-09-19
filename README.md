@@ -1,310 +1,280 @@
 # 🚀 GitHub Partner AI
 
+> **Advanced AI-powered GitHub repository analysis platform with interactive playground and intelligent insights.**
+
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9.2-blue.svg)](https://www.typescriptlang.org/)
 [![Mastra](https://img.shields.io/badge/Mastra-0.17.1-purple.svg)](https://mastra.ai/)
 [![MCP](https://img.shields.io/badge/MCP-0.13.0-green.svg)](https://modelcontextprotocol.io/)
 [![License](https://img.shields.io/badge/License-ISC-yellow.svg)](LICENSE)
 
-> **Advanced AI-powered GitHub repository analysis platform with comprehensive code quality assessment, security scanning, and intelligent insights.**
-
-## 📋 Table of Contents
-
-- [✨ Features](#-features)
-- [🏗️ Architecture](#️-architecture)
-- [🚀 Quick Start](#-quick-start)
-- [📖 Documentation](#-documentation)
-- [🔧 Configuration](#-configuration)
-- [🛠️ Development](#️-development)
-- [📊 API Reference](#-api-reference)
-- [🤝 Contributing](#-contributing)
-- [📄 License](#-license)
-
 ## ✨ Features
 
-### 🧠 **AI-Powered Analysis**
-- **Advanced Repository Analysis**: Deep codebase structure analysis without relying on documentation
-- **Intelligent Code Quality Assessment**: Comprehensive scoring with actionable recommendations
-- **Security Vulnerability Scanning**: Automated detection of security issues and remediation guidance
-- **Dependency Analysis**: Outdated package detection and vulnerability assessment
+### 🎯 **Single Account Focus**
 
-### 🔍 **Comprehensive Metrics**
-- **Repository Statistics**: Stars, forks, activity patterns, and popularity metrics
-- **Code Quality Scoring**: Multi-dimensional quality assessment with detailed insights
-- **Performance Analysis**: Architecture patterns and maintainability evaluation
-- **Technology Detection**: Automatic framework and library identification
+- **Streamlined Configuration**: One GitHub account, simple setup
+- **Environment Variables**: Easy configuration with `.env` file
+- **Runtime Override**: Change credentials through the playground UI
 
-### 🛡️ **Security & Quality**
-- **Vulnerability Detection**: Sensitive file detection and security configuration analysis
-- **Best Practice Evaluation**: Modern development practices and CI/CD assessment
-- **Dependency Security**: Outdated package detection and security risk analysis
-- **Compliance Checking**: License analysis and documentation completeness
+### 🖥️ **Interactive Playground**
 
-### 🔌 **Integration & Extensibility**
-- **Model Context Protocol (MCP)**: Standardized external tool integration
-- **Multi-Account Support**: Parallel operations across multiple GitHub accounts
-- **Caching & Performance**: Intelligent response caching and rate limiting
-- **RESTful API**: Clean, well-documented API endpoints
+- **Beautiful Web Interface**: Modern, responsive UI for repository analysis
+- **Real-time Analysis**: Instant repository insights and recommendations
+- **Visual Results**: Clear, organized analysis results with actionable insights
 
-## 🏗️ Architecture
+### 🤖 **AI-Powered Analysis**
 
-```mermaid
-graph TB
-    A[GitHub API] --> B[GitHub Service]
-    B --> C[Analysis Tools]
-    C --> D[AI Agent]
-    D --> E[Workflows]
-    E --> F[MCP Server]
-    F --> G[External Clients]
-    
-    B --> H[Cache Layer]
-    B --> I[Rate Limiting]
-    B --> J[Error Handling]
-    
-    D --> K[Memory Storage]
-    D --> L[AI Model]
-```
+- **Intelligent Code Quality Assessment**: Comprehensive scoring with recommendations
+- **Security Vulnerability Scanning**: Automated detection of security issues
+- **Technology Stack Detection**: Automatic framework and library identification
+- **Best Practice Evaluation**: Modern development practices assessment
 
-### **Core Components**
+### 🔧 **Developer-Friendly**
 
-| Component | Description | Key Features |
-|-----------|-------------|--------------|
-| **GitHub Service** | Enhanced API client | Retry logic, caching, rate limiting |
-| **AI Agent** | Intelligent analysis engine | 8 specialized tools, memory persistence |
-| **Workflows** | Orchestrated processes | Error handling, progress tracking |
-| **MCP Server** | External integration | Standardized protocol, tool exposure |
-| **Analysis Tools** | Specialized analyzers | Quality, security, metrics, dependencies |
+- **Easy Setup**: Get started in minutes with environment variables
+- **TypeScript**: Full type safety and excellent developer experience
+- **Mastra Framework**: Built on the powerful Mastra AI agent framework
+- **MCP Integration**: Model Context Protocol support for external tools
 
 ## 🚀 Quick Start
 
-### **Prerequisites**
+### Prerequisites
 
-- Node.js >= 20.9.0
-- pnpm (recommended) or npm
-- GitHub Personal Access Token
+- **Node.js** >= 20.9.0
+- **pnpm** (recommended) or npm
+- **GitHub Personal Access Token** ([Generate here](https://github.com/settings/tokens))
+- **OpenAI API Key** ([Get here](https://platform.openai.com/api-keys))
 
-### **Installation**
+### Installation
+
+#### Option 1: Interactive Setup (Recommended)
+
+1. **Clone and setup**
+
+   ```bash
+   git clone <repository-url>
+   cd github-partner-ai
+   pnpm install
+   pnpm run setup
+   ```
+
+2. **Start the playground**
+
+   ```bash
+   pnpm run playground
+   ```
+
+   Open [http://localhost:3001](http://localhost:3001) in your browser! 🎉
+
+#### Option 2: Manual Setup
+
+1. **Clone and install**
+
+   ```bash
+   git clone <repository-url>
+   cd github-partner-ai
+   pnpm install
+   ```
+
+2. **Configure environment**
+
+   ```bash
+   cp env.example .env
+   ```
+
+   Edit `.env` with your credentials:
+
+   ```env
+   GITHUB_USERNAME=your-github-username
+   GITHUB_TOKEN=ghp_your_personal_access_token_here
+   OPENAI_API_KEY=sk-your-openai-api-key-here
+   ```
+
+3. **Start the playground**
+
+   ```bash
+   pnpm run playground
+   ```
+
+   Open [http://localhost:3001](http://localhost:3001) in your browser! 🎉
+
+## 🎮 Playground Usage
+
+The playground provides an intuitive web interface for repository analysis:
+
+### 1. **Configuration**
+
+- Set your GitHub username and token
+- Environment variables are used as defaults
+- Override anytime through the UI
+
+### 2. **Repository Analysis**
+
+- Browse your repositories
+- Select any repository for analysis
+- Get instant insights and recommendations
+
+### 3. **Analysis Results**
+
+- **Repository Overview**: Basic stats and information
+- **Code Analysis**: Technology stack and complexity
+- **Insights**: Structure, testing, documentation status
+- **Recommendations**: Actionable improvement suggestions
+
+## 🛠️ Development
+
+### Available Scripts
 
 ```bash
-# Clone the repository
-git clone https://github.com/your-username/github-partner-ai.git
-cd github-partner-ai
+# Start the playground (recommended for most users)
+pnpm run playground
 
-# Install dependencies
-pnpm install
+# Start playground in development mode (auto-reload)
+pnpm run playground:dev
 
-# Set up environment variables
-cp .env.example .env
-```
-
-### **Environment Configuration**
-
-```bash
-# .env
-GITHUB_USERNAME_1=your-github-username
-GITHUB_TOKEN_1=your-github-token
-OPENAI_API_KEY=your-openai-api-key
-```
-
-### **Development**
-
-```bash
-# Start development server
+# Start Mastra development server
 pnpm run dev
+
+# Build the project
+pnpm run build
 
 # Type checking
 pnpm run typecheck
-
-# Build for production
-pnpm run build
-
-# Start production server
-pnpm run start
 ```
 
-## 📖 Documentation
+### Project Structure
 
-### **Agent Usage**
+```
+github-partner-ai/
+├── src/
+│   ├── lib/
+│   │   ├── github-service.ts    # GitHub API service
+│   │   ├── code-analyzer.ts     # Code analysis logic
+│   │   └── types.ts             # TypeScript types
+│   └── mastra/
+│       ├── agents/              # AI agents
+│       ├── tools/               # GitHub analysis tools
+│       ├── workflows/           # Analysis workflows
+│       └── mcp/                 # MCP server
+├── playground/
+│   ├── index.html              # Playground UI
+│   ├── server.js               # Playground API server
+│   └── package.json            # Playground dependencies
+├── env.example                 # Environment variables template
+└── README.md                   # This file
+```
+
+## 🔧 Configuration
+
+### Environment Variables
+
+Create a `.env` file in the project root:
+
+```env
+# GitHub Configuration (Required)
+GITHUB_USERNAME=your-github-username
+GITHUB_TOKEN=ghp_your_personal_access_token_here
+
+# OpenAI Configuration (Required for AI features)
+OPENAI_API_KEY=sk-your-openai-api-key-here
+
+# Optional: Server Ports
+PLAYGROUND_PORT=3001
+MASTRA_PORT=3000
+```
+
+### GitHub Token Setup
+
+1. Go to [GitHub Settings > Personal Access Tokens](https://github.com/settings/tokens)
+2. Click "Generate new token (classic)"
+3. Select these scopes:
+   - `repo` (Full control of private repositories)
+   - `read:user` (Read user profile data)
+   - `read:org` (Read org and team membership)
+4. Copy the token and add it to your `.env` file
+
+## 📖 API Usage
+
+### Programmatic Usage
 
 ```typescript
-import { mastra } from './src/mastra';
+import { mastra } from "./src/mastra";
 
 // Get the GitHub Expert Agent
-const agent = mastra.getAgent('githubExpertAgent');
+const agent = mastra.getAgent("githubExpertAgent");
 
 // Analyze a repository
 const response = await agent.generate(`
-  Analyze the repository "username/repo-name" and provide:
+  Analyze the repository "facebook/react" and provide:
   1. Code quality assessment
   2. Security analysis
   3. Technology stack identification
   4. Improvement recommendations
 `);
-```
 
-### **Workflow Execution**
-
-```typescript
 // Run comprehensive analysis workflow
-const workflow = mastra.getWorkflow('comprehensiveAnalysisWorkflow');
-const result = await workflow.createRunAsync({
-  owner: 'username',
-  repo: 'repo-name',
-  includeSecurity: true,
-  includeQuality: true,
-  includeMetrics: true,
-  includeDependencies: true
-}).start();
+const workflow = mastra.getWorkflow("comprehensiveAnalysisWorkflow");
+const result = await workflow
+  .createRunAsync({
+    owner: "facebook",
+    repo: "react",
+    includeSecurity: true,
+    includeQuality: true,
+    includeMetrics: true,
+    includeDependencies: true,
+  })
+  .start();
 ```
 
-### **MCP Integration**
+### MCP Integration
 
 ```typescript
 // Connect via MCP client
-import { Client } from '@modelcontextprotocol/sdk/client';
-import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp';
+import { Client } from "@modelcontextprotocol/sdk/client";
+import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/streamableHttp";
 
 const client = new Client({
-  name: 'github-ai-client',
-  version: '1.0.0'
+  name: "github-ai-client",
+  version: "1.0.0",
 });
 
 const transport = new StreamableHTTPClientTransport(
-  new URL('http://localhost:3000/mcp')
+  new URL("http://localhost:3000/mcp")
 );
 
 await client.connect(transport);
 
 // Use GitHub analysis tools
 const result = await client.callTool({
-  name: 'analyze_codebase',
+  name: "analyze_codebase",
   arguments: {
-    owner: 'username',
-    repo: 'repo-name'
-  }
-});
-```
-
-## 🔧 Configuration
-
-### **GitHub Service Configuration**
-
-```typescript
-// Multi-account setup
-const accounts = [
-  {
-    id: "account1",
-    username: process.env.GITHUB_USERNAME_1!,
-    token: process.env.GITHUB_TOKEN_1!,
-  },
-  // Add more accounts as needed
-];
-```
-
-### **Caching Configuration**
-
-```typescript
-// Cache TTL (Time-To-Live)
-private readonly CACHE_TTL = 5 * 60 * 1000; // 5 minutes
-
-// Force refresh option
-const repos = await githubService.getAllRepositories(true); // Bypass cache
-```
-
-### **Rate Limiting Configuration**
-
-```typescript
-// Octokit with retry and throttling
-const octokit = new EnhancedOctokit({
-  auth: account.token,
-  throttle: {
-    onRateLimit: (retryAfter, options) => {
-      console.warn(`Rate limit exceeded. Retrying after ${retryAfter} seconds.`);
-      return true;
-    },
-  },
-  retry: {
-    doNotRetry: ["400", "401", "403", "404", "422"],
-    retryAfterBaseValue: 1000,
-    retries: 3,
+    owner: "microsoft",
+    repo: "vscode",
   },
 });
 ```
 
-## 🛠️ Development
+## 🏗️ Architecture
 
-### **Project Structure**
+### Core Components
+
+- **GitHub Service**: Handles GitHub API calls with caching and rate limiting
+- **Code Analyzer**: Analyzes repository structure and code patterns
+- **AI Agents**: Provide intelligent analysis and recommendations
+- **Workflows**: Orchestrate complex analysis processes
+- **MCP Server**: Exposes tools and agents via Model Context Protocol
+- **Playground**: Interactive web interface for easy usage
+
+### Data Flow
 
 ```
-github-partner-ai/
-├── src/
-│   ├── mastra/                 # Mastra framework components
-│   │   ├── agents/            # AI agents
-│   │   ├── tools/             # GitHub analysis tools
-│   │   ├── workflows/         # Workflow definitions
-│   │   ├── mcp/              # MCP server configuration
-│   │   └── index.ts          # Main Mastra instance
-│   ├── lib/                   # Core library files
-│   │   ├── github-service.ts  # Enhanced GitHub API client
-│   │   ├── code-analyzer.ts   # Static code analysis
-│   │   └── types.ts          # TypeScript definitions
-│   └── examples/              # Usage examples
-├── .mastra/                   # Mastra build output
-├── docs/                      # Documentation
-└── tests/                     # Test suites
+GitHub API → GitHub Service → Tools → Agents → Workflows → MCP Server → Playground UI
 ```
-
-### **Available Scripts**
-
-| Script | Description |
-|--------|-------------|
-| `pnpm run dev` | Start development server |
-| `pnpm run build` | Build for production |
-| `pnpm run start` | Start production server |
-| `pnpm run typecheck` | Run TypeScript type checking |
-
-### **Code Quality**
-
-- **TypeScript**: Full type safety with strict configuration
-- **ESLint**: Code quality and style enforcement
-- **Prettier**: Consistent code formatting
-- **JSDoc**: Comprehensive documentation
-
-## 📊 API Reference
-
-### **Tools**
-
-#### Core Operations
-- `listRepositories` - Repository discovery and listing
-- `analyzeCodebase` - Basic codebase structure analysis
-- `createFile` - File creation and modification
-
-#### Advanced Analysis
-- `getRepositoryMetrics` - Comprehensive metrics and statistics
-- `searchRepositories` - Advanced repository search and filtering
-- `getCodeQuality` - Code quality assessment and scoring
-
-#### Security & Dependencies
-- `securityScan` - Security vulnerability scanning
-- `dependencyAnalysis` - Dependency analysis and vulnerability detection
-
-### **Workflows**
-
-#### `analyzeCodebaseWorkflow`
-Basic repository analysis workflow for quick insights.
-
-#### `comprehensiveAnalysisWorkflow`
-Full repository analysis including metrics, quality, security, and dependencies.
-
-### **Agents**
-
-#### `githubExpertAgent`
-Advanced AI agent with comprehensive repository analysis capabilities.
 
 ## 🤝 Contributing
 
 We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
 
-### **Development Setup**
+### Development Setup
 
 1. Fork the repository
 2. Create a feature branch: `git checkout -b feature/amazing-feature`
@@ -314,13 +284,55 @@ We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.
 6. Push to the branch: `git push origin feature/amazing-feature`
 7. Open a Pull Request
 
-### **Code Style**
+### Code Style
 
 - Follow TypeScript best practices
 - Use meaningful variable and function names
 - Add JSDoc comments for public APIs
 - Write comprehensive tests
 - Update documentation as needed
+
+## 📊 Analysis Capabilities
+
+### Repository Analysis
+
+- Structure and organization assessment
+- Technology stack identification
+- Code quality evaluation
+- Performance metrics calculation
+
+### Security Analysis
+
+- Vulnerability scanning
+- Dependency security assessment
+- Sensitive data detection
+- Security configuration review
+
+### Code Quality
+
+- Modern practice evaluation
+- Testing coverage assessment
+- Documentation completeness
+- CI/CD pipeline analysis
+
+### Metrics & Insights
+
+- Engagement scoring
+- Popularity metrics
+- Activity analysis
+- Trend identification
+
+## 🛠️ Key Technologies
+
+- **Mastra Framework**: Core AI agent framework
+- **TypeScript**: Type-safe development
+- **Octokit**: GitHub API client with plugins
+- **LibSQL**: Database storage
+- **Zod**: Schema validation
+- **OpenAI**: AI model integration
+- **MCP**: Model Context Protocol for external integration
+- **Express**: Playground API server
+- **HTML/CSS/JS**: Playground UI
 
 ## 📄 License
 
@@ -330,11 +342,10 @@ This project is licensed under the ISC License - see the [LICENSE](LICENSE) file
 
 - [Mastra](https://mastra.ai/) - AI agent framework
 - [Model Context Protocol](https://modelcontextprotocol.io/) - Tool integration standard
-- [Octokit](https://octokit.github.io/) - GitHub API client
-- [OpenAI](https://openai.com/) - AI model provider
+- [GitHub API](https://docs.github.com/en/rest) - Repository data source
+- [OpenAI](https://openai.com/) - AI analysis capabilities
+- **Cursor AI** - Code generation, MCP implementation, and README enhancement
 
 ---
 
-**Made with ❤️ by [Mikias Birhanu](https://github.com/mikiasbirhanu)**
-
-For questions, support, or collaboration, please open an issue or reach out via email.
+**Made with ❤️ for the developer community**
